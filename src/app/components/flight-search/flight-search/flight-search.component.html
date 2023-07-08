@@ -1,0 +1,44 @@
+<form (ngSubmit)="onSearch()" [formGroup]="journeyForm">
+  <div class="form-group">
+    <label for="origin">Origin:</label>
+    <input type="text" class="uppercase-input" id="origin" formControlName="origin" maxlength="3" required>
+  </div>
+  <div class="form-group">
+    <label for="destination">Destination:</label>
+    <input type="text" class="uppercase-input" id="destination" formControlName="destination" maxlength="3" required>
+  </div>
+  <button type="submit" [disabled]="isSearching">Search</button>
+  <div *ngIf="journeyForm.errors && journeyForm.errors['sameValue']" class="error-message">
+    Origin and destination cannot be the same.
+  </div>
+  <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+</form>
+<div *ngIf="journeyResponse">
+  <h2>Journey Details</h2>
+  <p>Origin: {{ journeyResponse.origin }}</p>
+  <p>Destination: {{ journeyResponse.destination }}</p>
+
+  <table class="my-table">
+    <thead>
+      <tr>
+        <th>Departure Station</th>
+        <th>Arrival Station</th>
+        <th>Flight Carrier</th>
+        <th>Flight Number</th>
+        <th>Price</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let flight of journeyResponse.flights">
+        <td>{{ flight.departureStation }}</td>
+        <td>{{ flight.arrivalStation }}</td>
+        <td>{{ flight.flightCarrier }}</td>
+        <td>{{ flight.flightNumber }}</td>
+        <td>{{ flight.price }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>Total Price: {{ journeyResponse.price }}</p>
+</div>
+
